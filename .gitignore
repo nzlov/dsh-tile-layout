@@ -1,0 +1,22 @@
+# Dependencies and local package archives
+node_modules/
+*.tgz
+/.artifacts/
+
+# Scratch output (client.js is the distributable runtime entry; keep it tracked)
+/dist/
+/coverage/
+*.log
+*.tmp
+/docs/.source-*
+
+# Local environment, editors, and OS metadata
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+.dsh-worktrees/

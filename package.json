@@ -1,0 +1,63 @@
+{
+  "name": "dsh-tile-layout",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Persistent tiled native DSH sessions with independent widths, mobile swiping and safe blank-session reuse.",
+  "engines": {
+    "dsh": ">=0.2.2-rc.4 <0.3.0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.zh-CN.md",
+    "docs/preview.webp",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check && node --check index.js && node --check client.js",
+    "test": "node --test test/*.test.js",
+    "prepack": "npm run build"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    }
+  },
+  "author": "nzlov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nzlov/dsh-tile-layout.git"
+  },
+  "homepage": "https://github.com/nzlov/dsh-tile-layout#readme",
+  "bugs": {
+    "url": "https://github.com/nzlov/dsh-tile-layout/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "session",
+    "tile-layout",
+    "plugin"
+  ]
+}
