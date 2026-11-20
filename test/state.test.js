@@ -86,7 +86,7 @@ test('only sufficiently horizontal swipes switch panes', () => {
 test('the file-drop guard does not classify tile reorder or text as a file gesture', () => {
   assert.equal(isFileTransfer(['text/plain', 'Files']), true);
   assert.equal(isFileTransfer(['application/x-dsh-file']), true);
-  assert.equal(isFileTransfer(['application/x-dsh-session-tile']), false);
+  assert.equal(isFileTransfer(['application/x-dsh-tile-layout']), false);
   assert.equal(isFileTransfer(['text/plain', 'text/uri-list']), false);
   assert.equal(isFileTransfer(undefined), false);
 });

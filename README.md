@@ -94,8 +94,4 @@ Cards use transparent structural layers over one shared outer background and fil
 
 After changing client sources or locale resources, run `npm run build`, `npm run check`, and `npm test` before packing. The generated [client.js](<client.js>) is the installable browser entry and uses the Host's React instance. It **must remain tracked in Git and included in packages**; do not ignore it.
 
-## Upgrading from `dsh-session-tiles`
-
-Disable or uninstall the old `dsh-session-tiles` plugin before enabling `dsh-tile-layout`, so two copies do not register the same panel. The renamed package retains the legacy panel identity and browser-storage keys. Keep your existing browser preferences; do not clear storage as part of the upgrade.
-
 [MIT License](<LICENSE>) · Copyright © 2026 nzlov.

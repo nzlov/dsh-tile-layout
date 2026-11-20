@@ -1,5 +1,4 @@
-// Legacy storage keys are intentionally stable across the dsh-tile-layout rename.
-export const STORAGE_KEY = 'dsh-session-tiles:order:v1';
+export const STORAGE_KEY = 'dsh-tile-layout:order:v1';
 
 export function parseOrder(raw) {
   try {
@@ -35,7 +34,7 @@ export function isFileTransfer(types) {
   return Array.from(types ?? []).some(type => type === 'Files' || type === 'application/x-dsh-file');
 }
 
-export const SESSION_BINDINGS_KEY = 'dsh-session-tiles:session-bindings:v1';
+export const SESSION_BINDINGS_KEY = 'dsh-tile-layout:session-bindings:v1';
 const bindingIdValid = id => typeof id === 'string' && id.trim().length > 0;
 
 export function parseSessionBindings(raw) {
@@ -114,7 +113,7 @@ export function createSessionBindingStore(getStorage, events) {
   };
 }
 
-export const PANEL_VIEW_KEY = 'dsh-session-tiles:active-panel:v1';
+export const PANEL_VIEW_KEY = 'dsh-tile-layout:active-panel:v1';
 
 export function reusableTileBlank(workspace, workspaceState, sessionState, occupied, agentPreset, bindingOf = () => undefined) {
   if (workspaceState?.phase !== 'ready' || sessionState?.phase !== 'ready') return undefined;

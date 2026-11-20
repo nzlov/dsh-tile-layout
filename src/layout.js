@@ -1,6 +1,6 @@
 import { columnWidths, sanitizeColumnRatios } from './resize.js';
 
-export const LAYOUT_KEY = 'dsh-session-tiles:sizing:v1';
+export const LAYOUT_KEY = 'dsh-tile-layout:sizing:v1';
 export const TILE_GAP = 12;
 export const MIN_TILE_WIDTH = 340;
 export const DEFAULT_OVERFLOW_WIDTH = 380;

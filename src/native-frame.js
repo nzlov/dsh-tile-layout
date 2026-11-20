@@ -3,7 +3,7 @@ import { swipeDirection } from './state.js';
 // Each pane runs the existing, authenticated DSH page in its own browser realm.
 // No copied header, Slot ownership bypass, or replacement Sidebar controller.
 export const TILE_FRAME_PARAM = 'dshTileSession';
-export const TILE_FRAME_CHANNEL = 'dsh-session-tiles:native:v1';
+export const TILE_FRAME_CHANNEL = 'dsh-tile-layout:native:v1';
 
 export function nativeFrameUrl(href, sessionId, token) {
   const url = new URL(href);
@@ -22,7 +22,7 @@ export function nativeFrameTarget(win) {
     const sessionId = url.searchParams.get(TILE_FRAME_PARAM);
     const token = url.searchParams.get('dshTileToken');
     const frame = win.frameElement;
-    if (!sessionId || !token || frame?.dataset.dshSessionTile !== sessionId
+    if (!sessionId || !token || frame?.dataset.dshTileLayout !== sessionId
       || frame.dataset.dshTileToken !== token) return undefined;
     return { sessionId, token };
   } catch { return undefined; }
@@ -182,7 +182,7 @@ export function installNativeTilePage(ctx, React, win, target) {
       currentSessionId, ...extra, isRootSession: currentIsRootSession,
     }, win.location.origin);
   };
-  ctx.effect(() => installNativeTileChrome(win), 'session tiles: embedded shell chrome');
+  ctx.effect(() => installNativeTileChrome(win), 'tile layout: embedded shell chrome');
   ctx.effect(() => {
     function probe(event) {
       if (event.source !== win.parent || event.origin !== win.location.origin
@@ -193,9 +193,9 @@ export function installNativeTilePage(ctx, React, win, target) {
     }
     win.addEventListener('message', probe);
     return () => win.removeEventListener('message', probe);
-  }, 'session tiles: repeatable readiness handshake');
+  }, 'tile layout: repeatable readiness handshake');
   ctx.effect(() => isolateTileNavigation(win.Storage.prototype, win.localStorage, target.sessionId),
-    'session tiles: isolate embedded navigation');
+    'tile layout: isolate embedded navigation');
   ctx.effect(() => {
     const boot = queueNativeOpen(() => ctx.sessions.list.getSnapshot(), () => {
       if (!ctx.sessions.list.getSnapshot().byId[target.sessionId]) { send('error'); return; }
@@ -210,7 +210,7 @@ export function installNativeTilePage(ctx, React, win, target) {
     const offList = ctx.sessions.list.subscribe(boot.check);
     boot.check();
     return () => { boot.dispose(); offList(); send('reload'); };
-  }, 'session tiles: native main session');
+  }, 'tile layout: native main session');
   // A committed native shell is the readiness boundary, not iframe load or
   // the return from openSession. Do not expose a restored, unrelated session.
   const current = ctx.get('uiSession')?.adapter.current;
@@ -242,7 +242,7 @@ export function installNativeTilePage(ctx, React, win, target) {
     return null;
   }
   ctx.slots.inject('shell.overlay', () => ctx.slots.register({
-    name: 'shell.overlay', id: 'dsh-session-tiles-native-status',
+    name: 'shell.overlay', id: 'dsh-tile-layout-native-status',
     ...(ctx.slots.entriesOfSlot('root')[0]?.store && { store: ctx.slots.entriesOfSlot('root')[0].store }),
   }, NativeStatus));
   ctx.effect(() => {
@@ -278,7 +278,7 @@ export function installNativeTilePage(ctx, React, win, target) {
       win.document.removeEventListener('touchend', end);
       win.document.removeEventListener('touchcancel', cancel);
     };
-  }, 'session tiles: native touch bridge');
+  }, 'tile layout: native touch bridge');
 }
 
 export function nativeFrameToken(random = globalThis.crypto) {
@@ -371,9 +371,9 @@ export function createNativeFrame(React, Button) {
     }, [id, attempt, activated]);
     return h('div', { ref: container, className: 'dsh-st-native-frame', 'aria-busy': status === 'loading' || undefined },
       activated && h('iframe', {
-        key: `${id}:${attempt}`, ref, title, name: `dsh-session-tile:${id}`, onLoad: requestReady,
+        key: `${id}:${attempt}`, ref, title, name: `dsh-tile-layout:${id}`, onLoad: requestReady,
         src: nativeFrameUrl(window.location.href, launch.current.sessionId, launch.current.token),
-        'data-dsh-session-tile': launch.current.sessionId, 'data-dsh-tile-token': launch.current.token,
+        'data-dsh-tile-layout': launch.current.sessionId, 'data-dsh-tile-token': launch.current.token,
         allow: 'clipboard-read; clipboard-write; fullscreen; display-capture',
         className: status === 'ready' ? 'dsh-st-frame-ready' : undefined,
       }),

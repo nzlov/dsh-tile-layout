@@ -25,7 +25,7 @@ test('native frames reuse the current server and path, without forwarding query 
 test('embedded mode requires an actual parent iframe and matching data markers', () => {
   const win = {
     location: { href: nativeFrameUrl('http://localhost:3001/', 's', 'token') },
-    parent: {}, frameElement: { dataset: { dshSessionTile: 's', dshTileToken: 'token' } },
+    parent: {}, frameElement: { dataset: { dshTileLayout: 's', dshTileToken: 'token' } },
   };
   assert.deepEqual(nativeFrameTarget(win), { sessionId: 's', token: 'token' });
   win.frameElement.dataset.dshTileToken = 'wrong';

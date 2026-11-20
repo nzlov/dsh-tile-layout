@@ -1,7 +1,6 @@
 export function createTilePlugin(React, css, dictionaries) {
   const { createElement: h, useEffect, useMemo, useRef, useState, useSyncExternalStore } = React;
-  // Stable legacy panel identity preserves saved views across the package rename.
-  const panel = 'dsh-session-tiles';
+  const panel = 'dsh-tile-layout';
   const mobileQuery = '(max-width: 767px), (max-width: 950px) and (pointer: coarse)';
   const Splitter = createSplitter(React);
   const headerCss = `.dsh-st-toggle{display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer}.dsh-st-toggle:hover,.dsh-st-toggle[aria-pressed=true]{background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-brand-text)}.dsh-st-toggle:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:1px}`;
@@ -258,7 +257,7 @@ export function createTilePlugin(React, css, dictionaries) {
               if (mounted.current) addSession(id);
             };
             if (typeof window.navigator.locks?.request === 'function') {
-              await window.navigator.locks.request('dsh-session-tiles:new-default-session', createAndJoin);
+              await window.navigator.locks.request('dsh-tile-layout:new-default-session', createAndJoin);
             } else await createAndJoin();
           } catch (error) {
             console.warn('[dsh-tile-layout] Session creation failed', error);
@@ -442,7 +441,7 @@ export function createTilePlugin(React, css, dictionaries) {
                   onDragStart: event => {
                     drag.current = id; setDragging(id);
                     event.dataTransfer.effectAllowed = 'move';
-                    event.dataTransfer.setData('application/x-dsh-session-tile', id);
+                    event.dataTransfer.setData('application/x-dsh-tile-layout', id);
                   },
                   onDragEnd: endDrag,
                   onKeyDown: event => {

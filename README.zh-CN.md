@@ -94,8 +94,4 @@ dsh plugin --profile web add '/absolute/path/to/dsh-tile-layout-<version>.tgz'
 
 修改客户端源码或语言资源后，打包前请运行 `npm run build`、`npm run check` 和 `npm test`。生成的 [client.js](<client.js>) 是可安装的浏览器入口，使用 Host 提供的 React 实例；**必须跟踪到 Git 并随安装包发布，不能将它加入忽略规则**。
 
-## 从 `dsh-session-tiles` 升级
-
-启用 `dsh-tile-layout` 前，请先禁用或卸载旧的 `dsh-session-tiles`，避免两份插件重复注册同一面板。更名后的包兼容旧面板身份及浏览器存储 key；请保留已有浏览器偏好，不要为升级而清空存储。
-
 [MIT 协议](<LICENSE>) · 版权所有 © 2026 nzlov。
