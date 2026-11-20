@@ -14,6 +14,16 @@ A session-tiling panel for DSH Web. Keep several complete native conversations s
 
 Requires DSH Web `>=0.2.2-rc.4 <0.3.0`.
 
+### From npm
+
+Open **Plugins → Add plugin** in the DSH sidebar, enter `dsh-tile-layout`, then install and enable it. Or run on the DSH host:
+
+```sh
+dsh plugin --profile web add dsh-tile-layout
+```
+
+Replace `web` if you use another profile. If DSH requests a restart, restart the Web service and refresh the browser.
+
 ### From GitHub
 
 Open **Plugins → Add plugin** in the DSH sidebar and enter:
@@ -30,7 +40,7 @@ Alternatively, run this command on the DSH host:
 dsh plugin --profile web add 'git+https://github.com/nzlov/dsh-tile-layout.git#main'
 ```
 
-Replace `web` if you use another profile. These instructions install from GitHub, not from an npm registry release.
+Replace `web` if you use another profile. This GitHub option follows the `main` branch; use the npm option above for the published package.
 
 ### From a local package
 

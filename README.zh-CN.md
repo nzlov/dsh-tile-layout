@@ -14,6 +14,16 @@
 
 需要 DSH Web `>=0.2.2-rc.4 <0.3.0`。
 
+### 从 npm 安装
+
+在 DSH 侧栏打开 **插件 → 添加插件**，输入 `dsh-tile-layout`，然后安装并启用。也可以在 DSH 服务端执行：
+
+```sh
+dsh plugin --profile web add dsh-tile-layout
+```
+
+若使用其他 profile，请将 `web` 换成实际名称。如果 DSH 提示需要重启，请重启 Web 服务后刷新浏览器。
+
 ### 从 GitHub 安装
 
 在 DSH 侧栏打开 **插件 → 添加插件**，输入：
@@ -30,7 +40,7 @@ git+https://github.com/nzlov/dsh-tile-layout.git#main
 dsh plugin --profile web add 'git+https://github.com/nzlov/dsh-tile-layout.git#main'
 ```
 
-若使用其他 profile，请将 `web` 换成实际名称。这里通过 GitHub 安装，并非 npm 仓库发布说明。
+若使用其他 profile，请将 `web` 换成实际名称。GitHub 方式跟随 `main` 分支；如需已发布的安装包，请使用上面的 npm 方式。
 
 ### 从本地安装包安装
 
