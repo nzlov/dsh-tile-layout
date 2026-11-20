@@ -412,6 +412,17 @@ const paneIdAllowed = id => typeof id === 'string' && id.length > 0
   && id !== '__proto__' && id !== 'constructor' && id !== 'prototype';
 const hasPaneWidths = sizing => sizing !== null && typeof sizing === 'object' && Object.hasOwn(sizing, 'paneWidths');
 
+function ownLastWidth(sizing) {
+  if (sizing === null || typeof sizing !== 'object') return undefined;
+  const width = Object.getOwnPropertyDescriptor(sizing, 'lastWidth')?.value;
+  return Number.isFinite(width) ? Math.max(MIN_TILE_WIDTH, Math.min(MAX_SESSION_WIDTH, width)) : undefined;
+}
+
+/** New cards inherit the last committed manual resize, never another card's width. */
+function defaultSessionWidth(sizing) {
+  return ownLastWidth(sizing) ?? DEFAULT_OVERFLOW_WIDTH;
+}
+
 function ownPaneWidth(map, id) {
   if (!paneIdAllowed(id) || map === null || typeof map !== 'object' || Array.isArray(map) || !Object.hasOwn(map, id)) return undefined;
   // Data properties only: inherited values and accessors never become widths.
@@ -433,7 +444,7 @@ function sanitizePaneWidths(value) {
 function sessionStrip(sizing, ids, viewportWidth) {
   if (ids.length === 0) return { widths: [], usable: 0, scrolls: false };
   const viewport = Number.isFinite(viewportWidth) ? Math.max(0, viewportWidth) : 0;
-  if (!hasPaneWidths(sizing)) {
+  if (!hasPaneWidths(sizing) && ownLastWidth(sizing) === undefined) {
     const geometry = stripGeometry(ids.length, viewport, sizing.spans?.[ids.length]);
     return {
       widths: columnWidths(sanitizeColumnRatios(sizing.columns?.[ids.length], ids.length), geometry.usable, MIN_TILE_WIDTH),
@@ -441,7 +452,7 @@ function sessionStrip(sizing, ids, viewportWidth) {
       scrolls: geometry.scrolls,
     };
   }
-  const widths = ids.map(id => ownPaneWidth(sizing.paneWidths, id) ?? DEFAULT_OVERFLOW_WIDTH);
+  const widths = ids.map(id => ownPaneWidth(sizing.paneWidths, id) ?? defaultSessionWidth(sizing));
   const usable = widths.reduce((sum, width) => sum + width, 0);
   return { widths, usable, scrolls: usable + ids.length * TILE_GAP > viewport };
 }
@@ -467,7 +478,7 @@ function resizeSessionWidth(sizing, ids, viewportWidth, id, delta) {
   if (nextWidth === width) return sizing;
   const paneWidths = sanitizePaneWidths(baseline.paneWidths);
   paneWidths[id] = nextWidth;
-  return { ...baseline, paneWidths };
+  return { ...baseline, paneWidths, lastWidth: nextWidth };
 }
 
 function parseSizing(raw) {
@@ -488,6 +499,8 @@ function parseSizing(raw) {
     if (value !== null && typeof value === 'object' && Object.hasOwn(value, 'paneWidths')) {
       sizing.paneWidths = sanitizePaneWidths(value.paneWidths);
     }
+    const lastWidth = ownLastWidth(value);
+    if (lastWidth !== undefined) sizing.lastWidth = lastWidth;
   } catch { /* Unavailable or damaged storage starts with equal sizes. */ }
   return sizing;
 }
@@ -1161,7 +1174,7 @@ function createTilePlugin(React, css, dictionaries) {
         function prepareAddedWidth(id) {
           const saved = retainDesktopWidths();
           if (mobile || Object.hasOwn(saved.paneWidths ?? {}, id)) return;
-          sizes.save({ ...saved, paneWidths: { ...saved.paneWidths, [id]: DEFAULT_OVERFLOW_WIDTH } });
+          sizes.save({ ...saved, paneWidths: { ...saved.paneWidths, [id]: defaultSessionWidth(saved) } });
         }
         function addSession(sessionId) {
           const anchor = joinSession(sessionId, prepareAddedWidth);

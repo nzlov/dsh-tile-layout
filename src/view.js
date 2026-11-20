@@ -178,7 +178,7 @@ export function createTilePlugin(React, css, dictionaries) {
         function prepareAddedWidth(id) {
           const saved = retainDesktopWidths();
           if (mobile || Object.hasOwn(saved.paneWidths ?? {}, id)) return;
-          sizes.save({ ...saved, paneWidths: { ...saved.paneWidths, [id]: DEFAULT_OVERFLOW_WIDTH } });
+          sizes.save({ ...saved, paneWidths: { ...saved.paneWidths, [id]: defaultSessionWidth(saved) } });
         }
         function addSession(sessionId) {
           const anchor = joinSession(sessionId, prepareAddedWidth);

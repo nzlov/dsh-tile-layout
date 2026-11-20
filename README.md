@@ -70,7 +70,7 @@ Open the session-tiling panel from the sidebar. The slim left rail has two verti
 
 ### Layout
 
-- **Desktop:** a single horizontal row, with each card at least **340 px** wide. Overflow scrolls horizontally; height fills the available area. Every card remembers its own pixel width. Adding, removing, or reordering cards does not redistribute the others' widths.
+- **Desktop:** a single horizontal row, with each card at least **340 px** wide. Overflow scrolls horizontally; height fills the available area. Every card remembers its own pixel width. New cards without a saved width use the last committed manual resize width (380 px before any resize). Cards with a remembered width keep their own size. Adding, removing, or reordering cards does not redistribute the others' widths.
 - **Resize and reorder:** drag a card's title handle to reorder. Each divider, including the trailing edge, resizes only the card to its left. Divider decoration appears on hover, focus, or drag. Double-click resets that card to **380 px**. There are no height handles.
 - **Mobile:** one card at a time. Swipe through non-interactive conversation space, or use the previous/next buttons inside the title row. Inputs, menus, code blocks, and sidebars retain their own gestures.
 
